@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const enrollmentSchema = new mongoose.Schema(
+const EnrollmentModel = new mongoose.Schema(
   {
     studentId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -32,7 +32,7 @@ const enrollmentSchema = new mongoose.Schema(
 
 const Enrollment = mongoose.model(
   "Enrollment",
-  enrollmentSchema
+  EnrollmentModel
 );
 
 export default Enrollment;
