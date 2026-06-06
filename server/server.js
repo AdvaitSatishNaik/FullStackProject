@@ -1,10 +1,14 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+import dotenv from "dotenv";
+
 import StudentRoutes from "./routes/StudentRoutes.js";
 import CourseRoutes from "./routes/CourseRoutes.js";
 import EnrollmentRoutes from "./routes/EnrollmentRoutes.js";
 import AnalyticsRoutes from "./routes/AnalyticsRoutes.js";
+
+dotenv.config();
 
 const app = express();
 
@@ -17,12 +21,12 @@ app.use("/enrollments", EnrollmentRoutes);
 app.use("/analytics", AnalyticsRoutes);
 
 mongoose
-  .connect("mongodb+srv://advaitnaik:BWZrOg9UKIAuuj5y@cluster0.bjl1d7f.mongodb.net/awdiz34_db")
+  .connect(process.env.MONGODB_URL)
   .then(() => {
     console.log("MongoDB Connected");
   })
   .catch((err) => {
-    console.error(err);
+    console.error("MongoDB Connection Error:", err);
   });
 
 const PORT = process.env.PORT || 5001;
