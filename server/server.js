@@ -25,6 +25,8 @@ mongoose
     console.error(err);
   });
 
-app.listen(5000, () => {
-  console.log("Server Running On Port 5000");
+const PORT = process.env.PORT || 5001;
+
+app.listen(PORT, () => {
+  console.log(`Server Running On Port ${PORT}`);
 });
