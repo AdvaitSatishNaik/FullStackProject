@@ -1,20 +1,20 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import studentRoutes from "./routes/StudentRoutes.js";
-import courseRoutes from "./routes/CourseRoutes.js";
-import enrollmentRoutes from "./routes/EnrollmentRoutes.js";
-import analyticsRoutes from "./routes/AnalyticsRoutes.js";
+import StudentRoutes from "./routes/StudentRoutes.js";
+import CourseRoutes from "./routes/CourseRoutes.js";
+import EnrollmentRoutes from "./routes/EnrollmentRoutes.js";
+import AnalyticsRoutes from "./routes/AnalyticsRoutes.js";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-app.use("/students", studentRoutes);
-app.use("/courses", courseRoutes);
-app.use("/enrollments", enrollmentRoutes);
-app.use("/analytics", analyticsRoutes);
+app.use("/students", StudentRoutes);
+app.use("/courses", CourseRoutes);
+app.use("/enrollments", EnrollmentRoutes);
+app.use("/analytics", AnalyticsRoutes);
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/project")
