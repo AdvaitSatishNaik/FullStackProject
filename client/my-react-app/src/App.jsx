@@ -1,11 +1,10 @@
 import { useState } from 'react'
-import {HomePage}from './components/HomePage'
+import HomePage from '../components/HomePage.jsx'
 
 import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
-
   return (
     <>
       <HomePage />
