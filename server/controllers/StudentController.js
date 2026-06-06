@@ -5,12 +5,39 @@ import mongoose from 'mongoose';
 import Router from 'express';
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 6000;
 const router = express.Router();
 
+const StudentController={
+    getAllStudents: (req, res) => {
+        // Logic to get all students
+        res.json({ message: 'Get all students' });
+    },
+    getStudentById: (req, res) => {
+        const studentId = req.params.id;
+        // Logic to get a student by ID
+        res.json({ message: `Get student with ID: ${studentId}` });
+    },
+    createStudent: (req, res) => {
+        const { name, age } = req.body;
+        // Logic to create a new student
+        res.status(201).json({ message: 'Student created', student: { name, age } });
+    },
+    updateStudent: (req, res) => {
+        const studentId = req.params.id;
+        const { name, age } = req.body;
+        // Logic to update a student by ID
+        res.json({ message: `Student with ID: ${studentId} updated`, student: { name, age } });
+    },
+    deleteStudent: (req, res) => {
+        const studentId = req.params.id;
+        // Logic to delete a student by ID
+        res.json({ message: `Student with ID: ${studentId} deleted` });
+    }
+}       
+export default StudentController;
 // Middleware
 app.use(express.json());
-
 
 
 // Connect to MongoDB and start the server
@@ -86,4 +113,4 @@ export const deleteStudent = (req, res) => {
     }
 };      
 
-export default StudentController;
+

@@ -4,7 +4,7 @@ dotev.config();
 import mongoose from 'mongoose';
 import Router from 'express';
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 const router = express.Router();
 
 // Middleware
