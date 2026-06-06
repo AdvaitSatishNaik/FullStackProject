@@ -17,7 +17,7 @@ app.use("/enrollments", EnrollmentRoutes);
 app.use("/analytics", AnalyticsRoutes);
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/project")
+  .connect("mongodb+srv://advaitnaik:BWZrOg9UKIAuuj5y@cluster0.bjl1d7f.mongodb.net/awdiz34_db")
   .then(() => {
     console.log("MongoDB Connected");
   })
