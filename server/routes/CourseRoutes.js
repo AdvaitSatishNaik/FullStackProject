@@ -1,20 +1,23 @@
-import express from 'express';
-// 1. Make sure this import line is present at the top!
-import * as StudentController from '../controller/StudentController.js'; 
+import express from "express";
+
+import {
+  createCourse,
+  getCourses,
+  getCourseById,
+  updateCourse,
+  deleteCourse,
+} from "../controllers/courseController.js";
 
 const router = express.Router();
-// Get all courses
-router.get("/allCourses", CourseController.getAllCourses);
 
-// Get a course by ID
-router.get("/course/:id", CourseController.getCourseById);
+router.post("/", createCourse);
 
-// Create a new course  
-router.post("/createcourse", CourseController.createCourse);
+router.get("/", getCourses);
 
-// Update a course by ID
-router.put("/updatecourse/:id", CourseController.updateCourse);
+router.get("/:id", getCourseById);
 
-// Delete a course by ID
-router.delete("/course/:id", CourseController.deleteCourse);
-export default router;  
+router.put("/:id", updateCourse);
+
+router.delete("/:id", deleteCourse);
+
+export default router;

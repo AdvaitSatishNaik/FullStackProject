@@ -1,18 +1,23 @@
-import express from 'express';
-// 1. Make sure this import line is present at the top!
-import * as EnrollementController from '../controller/StudentController.js';
+import express from "express";
+
+import {
+  createEnrollment,
+  getEnrollments,
+  getEnrollmentById,
+  updateEnrollment,
+  deleteEnrollment,
+} from "../controllers/enrollmentController.js";
 
 const router = express.Router();
-// Get student by id
-router.get("/enrolledstudent/:id", EnrollementController.getStudentById);
 
-// Get student by course id
-router.get("/enrolledstudent/course/:id", EnrollementController.getStudentByCourseId);
+router.post("/", createEnrollment);
 
-// Get student by Enrollement Date
-router.get("/enrolledstudent/date/:date", EnrollementController.getStudentByEnrollementDate);
+router.get("/", getEnrollments);
 
-// Get student by status
-router.get("/enrolledstudent/status/:status", EnrollementController.getStudentByStatus);
+router.get("/:id", getEnrollmentById);
 
-export default router;  
+router.put("/:id", updateEnrollment);
+
+router.delete("/:id", deleteEnrollment);
+
+export default router;

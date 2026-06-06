@@ -1,116 +1,125 @@
-import express from 'express';   
-import dotev from 'dotenv';
-dotev.config();
-import mongoose from 'mongoose';
-import Router from 'express';
+import Student from "../models/StudentModule.js";
 
-const app = express();
-const PORT = process.env.PORT || 6000;
-const router = express.Router();
+// Create Student
+export const createStudent = async (req, res) => {
+  try {
+    const { name, email, mobile } = req.body;
 
-const StudentController={
-    getAllStudents: (req, res) => {
-        // Logic to get all students
-        res.json({ message: 'Get all students' });
-    },
-    getStudentById: (req, res) => {
-        const studentId = req.params.id;
-        // Logic to get a student by ID
-        res.json({ message: `Get student with ID: ${studentId}` });
-    },
-    createStudent: (req, res) => {
-        const { name, age } = req.body;
-        // Logic to create a new student
-        res.status(201).json({ message: 'Student created', student: { name, age } });
-    },
-    updateStudent: (req, res) => {
-        const studentId = req.params.id;
-        const { name, age } = req.body;
-        // Logic to update a student by ID
-        res.json({ message: `Student with ID: ${studentId} updated`, student: { name, age } });
-    },
-    deleteStudent: (req, res) => {
-        const studentId = req.params.id;
-        // Logic to delete a student by ID
-        res.json({ message: `Student with ID: ${studentId} deleted` });
-    }
-}       
-export default StudentController;
-// Middleware
-app.use(express.json());
+    const student = await Student.create({
+      name,
+      email,
+      mobile,
+    });
 
-
-// Connect to MongoDB and start the server
-mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
-        console.log('Connected to MongoDB');
-        app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`);
-        });
-    })
-    .catch(err => {
-        console.error('Failed to connect to MongoDB', err);
-    });             
-
-// Mock data for students
-let students = [
-    { id: 1, name: 'John Doe', age: 20 },
-    { id: 2, name: 'Jane Smith', age: 22 },
-    { id: 3, name: 'Bob Johnson', age: 21 },
-    { id: 4, name: 'Alice Williams', age: 23 },
-];
-
-// Get all students
-export const getAllStudents = (req, res) => {
-    res.json(students);
+    res.status(201).json({
+      success: true,
+      data: student,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
-// Get a student by ID
-export const getStudentById = (req, res) => {
-    const studentId = parseInt(req.params.id);
-    const student = students.find(s => s.id === studentId);
-    if (student) {
-        res.json(student);
-    } else {
-        res.status(404).json({ message: 'Student not found' });
-    }
+// Get All Students
+export const getStudents = async (req, res) => {
+  try {
+    const students = await Student.find().sort({
+      createdAt: -1,
+    });
+
+    res.status(200).json({
+      success: true,
+      count: students.length,
+      data: students,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
-// Create a new student
-export const createStudent = (req, res) => {
-    const { name, age } = req.body;
-    const newStudent = {
-        id: students.length + 1,
-        name,
-        age
-    };
-    students.push(newStudent);
-    res.status(201).json(newStudent);
+// Get Single Student
+export const getStudentById = async (req, res) => {
+  try {
+    const student = await Student.findById(req.params.id);
+
+    if (!student) {
+      return res.status(404).json({
+        success: false,
+        message: "Student not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: student,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
-// Update a student by ID
-export const updateStudent = (req, res) => {
-    const studentId = parseInt(req.params.id);
-    const { name, age } = req.body;
-    const studentIndex = students.findIndex(s => s.id === studentId);
-    if (studentIndex !== -1) {
-        students[studentIndex] = { id: studentId, name, age };
-        res.json(students[studentIndex]);
-    } else {
-        res.status(404).json({ message: 'Student not found' });
+// Update Student
+export const updateStudent = async (req, res) => {
+  try {
+    const student = await Student.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    if (!student) {
+      return res.status(404).json({
+        success: false,
+        message: "Student not found",
+      });
     }
+
+    res.status(200).json({
+      success: true,
+      data: student,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
-// Delete a student by ID
-export const deleteStudent = (req, res) => {
-    const studentId = parseInt(req.params.id);
-    const studentIndex = students.findIndex(s => s.id === studentId);
-    if (studentIndex !== -1) {
-        const deletedStudent = students.splice(studentIndex, 1);
-        res.json(deletedStudent[0]);
-    } else {
-        res.status(404).json({ message: 'Student not found' });
+// Delete Student
+export const deleteStudent = async (req, res) => {
+  try {
+    const student = await Student.findByIdAndDelete(
+      req.params.id
+    );
+
+    if (!student) {
+      return res.status(404).json({
+        success: false,
+        message: "Student not found",
+      });
     }
-};      
 
-
+    res.status(200).json({
+      success: true,
+      message: "Student deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

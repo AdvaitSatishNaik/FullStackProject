@@ -7,7 +7,7 @@ import userRoutes from './routes/StudentRoutes.js';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 500;
 
 // Middleware
 app.use(express.json());
@@ -17,7 +17,7 @@ app.use('/api', studentRoutes);
 app.use('/api', userRoutes);
 
 // Connect to MongoDB and start the server
-mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGODB_URL)
     .then(() => {
         console.log('Connected to MongoDB');
         app.listen(PORT, () => {

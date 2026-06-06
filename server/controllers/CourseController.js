@@ -1,87 +1,151 @@
-import express from 'express';   
-import dotev from 'dotenv';
-dotev.config();
-import mongoose from 'mongoose';
-import Router from 'express';
-const app = express();
-const PORT = process.env.PORT || 5001;
-const router = express.Router();
+import Course from "../models/CourseModel.js";
 
-// Middleware
-app.use(express.json());
+// Create Course
+export const createCourse = async (
+  req,
+  res
+) => {
+  try {
+    const {
+      title,
+      category,
+      fees,
+      duration,
+    } = req.body;
 
-// Connect to MongoDB and start the server
-mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
-        console.log('Connected to MongoDB');
-        app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`);
-        });
-    })
-    .catch(err => {
-        console.error('Failed to connect to MongoDB', err);
-    });             
+    const course = await Course.create({
+      title,
+      category,
+      fees,
+      duration,
+    });
 
-// Mock data for courses
-
-let courses = [
-    { id: 1, title: 'Mathematics', credits: 3 },
-    { id: 2, title: 'Physics', credits: 4 },
-    { id: 3, title: 'Chemistry', credits: 3 },
-    { id: 4, title: 'Biology', credits: 4 },
-];
-
-// Get all courses
-export const getAllCourses = (req, res) => {
-    res.json(courses);
+    res.status(201).json({
+      success: true,
+      data: course,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
-// Get a course by ID
-export const getCourseById = (req, res) => {
-    const courseId = parseInt(req.params.id);
-    const course = courses.find(c => c.id === courseId);
-    if (course) {
-        res.json(course);
-    } else {
-        res.status(404).json({ message: 'Course not found' });
+// Get All Courses
+export const getCourses = async (
+  req,
+  res
+) => {
+  try {
+    const courses = await Course.find().sort({
+      createdAt: -1,
+    });
+
+    res.status(200).json({
+      success: true,
+      count: courses.length,
+      data: courses,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// Get Course By ID
+export const getCourseById = async (
+  req,
+  res
+) => {
+  try {
+    const course = await Course.findById(
+      req.params.id
+    );
+
+    if (!course) {
+      return res.status(404).json({
+        success: false,
+        message: "Course not found",
+      });
     }
+
+    res.status(200).json({
+      success: true,
+      data: course,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
-// Create a new course
-export const createCourse = (req, res) => {
-    const { title, credits } = req.body;
-    const newCourse = {
-        id: courses.length + 1,
-        title,
-        credits
-    };
-    courses.push(newCourse);
-    res.status(201).json(newCourse);
-};
+// Update Course
+export const updateCourse = async (
+  req,
+  res
+) => {
+  try {
+    const course =
+      await Course.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
 
-// Update a course by ID
-export const updateCourse = (req, res) => {
-    const courseId = parseInt(req.params.id);
-    const { title, credits } = req.body;
-    const courseIndex = courses.findIndex(c => c.id === courseId);
-    if (courseIndex !== -1) {
-        courses[courseIndex] = { id: courseId, title, credits };
-        res.json(courses[courseIndex]);
-    } else {
-        res.status(404).json({ message: 'Course not found' });
+    if (!course) {
+      return res.status(404).json({
+        success: false,
+        message: "Course not found",
+      });
     }
+
+    res.status(200).json({
+      success: true,
+      data: course,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
-// Delete a course by ID
-export const deleteCourse = (req, res) => {
-    const courseId = parseInt(req.params.id);
-    const courseIndex = courses.findIndex(c => c.id === courseId);
-    if (courseIndex !== -1) {
-        const deletedCourse = courses.splice(courseIndex, 1);
-        res.json(deletedCourse[0]);
-    } else {
-        res.status(404).json({ message: 'Course not found' });
-    }
-};      
+// Delete Course
+export const deleteCourse = async (
+  req,
+  res
+) => {
+  try {
+    const course =
+      await Course.findByIdAndDelete(
+        req.params.id
+      );
 
-export default CourseController;
+    if (!course) {
+      return res.status(404).json({
+        success: false,
+        message: "Course not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message:
+        "Course deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
