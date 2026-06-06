@@ -1,31 +1,36 @@
-const express = require("express");
-const router = express.Router();
+import express from "express";
 
-const {
+import {
   courseStudentCount,
   revenuePerCourse,
   topCourses,
-  dashboardStats
-} = require("../controllers/analyticsController");
+  dashboardStats,
+} from "../controllers/AnalyticsController.js";
 
+const router = express.Router();
+
+// Course Wise Student Count
 router.get(
   "/course-student-count",
   courseStudentCount
 );
 
+// Revenue Per Course
 router.get(
   "/revenue",
   revenuePerCourse
 );
 
+// Top 3 Most Popular Courses
 router.get(
   "/top-courses",
   topCourses
 );
 
+// Dashboard Statistics
 router.get(
   "/dashboard",
   dashboardStats
 );
 
-module.exports = router;
+export default router;
