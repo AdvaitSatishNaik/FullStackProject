@@ -3,10 +3,6 @@ import Student from "../models/StudentModel.js";
 import Course from "../models/CourseModel.js";
 
 
-// =====================================
-// Course Wise Student Count
-// =====================================
-
 export const courseStudentCount = async (
   req,
   res
@@ -50,9 +46,6 @@ export const courseStudentCount = async (
 };
 
 
-// =====================================
-// Revenue Per Course
-// =====================================
 
 export const revenuePerCourse = async (
   req,
@@ -96,10 +89,6 @@ export const revenuePerCourse = async (
   }
 };
 
-
-// =====================================
-// Top 3 Courses
-// =====================================
 
 export const topCourses = async (
   req,
@@ -151,10 +140,6 @@ export const topCourses = async (
   }
 };
 
-
-// =====================================
-// Dashboard Statistics
-// =====================================
 
 export const dashboardStats = async (
   req,

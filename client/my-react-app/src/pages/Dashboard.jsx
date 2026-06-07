@@ -127,7 +127,7 @@ function Dashboard() {
       {/* Top Courses */}
 
       <div className="section">
-        <h2>Top 3 Courses</h2>
+        <h2>Top 2 Courses</h2>
 
         <table>
           <thead>
