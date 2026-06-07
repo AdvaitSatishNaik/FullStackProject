@@ -7,7 +7,7 @@ export const fetchStudents = createAsyncThunk(
   async () => {
     const response = await api.get("/students");
     return response.data;
-  }
+  },
 );
 
 // ADD Student
@@ -16,7 +16,7 @@ export const addStudent = createAsyncThunk(
   async (studentData) => {
     const response = await api.post("/students", studentData);
     return response.data;
-  }
+  },
 );
 
 // DELETE Student
@@ -25,7 +25,7 @@ export const deleteStudent = createAsyncThunk(
   async (id) => {
     await api.delete(`/students/${id}`);
     return id;
-  }
+  },
 );
 
 const studentSlice = createSlice({
@@ -48,7 +48,7 @@ const studentSlice = createSlice({
       })
       .addCase(fetchStudents.fulfilled, (state, action) => {
         state.loading = false;
-        state.students = action.payload;
+        state.students = action.payload.data;
       })
       .addCase(fetchStudents.rejected, (state, action) => {
         state.loading = false;
@@ -63,7 +63,7 @@ const studentSlice = createSlice({
       // Delete Student
       .addCase(deleteStudent.fulfilled, (state, action) => {
         state.students = state.students.filter(
-          (student) => student._id !== action.payload
+          (student) => student._id !== action.payload,
         );
       });
   },

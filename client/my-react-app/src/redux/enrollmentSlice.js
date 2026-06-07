@@ -44,7 +44,7 @@ const enrollmentSlice = createSlice({
 
       .addCase(fetchEnrollments.fulfilled, (state, action) => {
         state.loading = false;
-        state.enrollments = action.payload;
+        state.enrollments = action.payload.data;
       })
 
       .addCase(fetchEnrollments.rejected, (state, action) => {
