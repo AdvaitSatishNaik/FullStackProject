@@ -1,22 +1,16 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function Navbar() {
   return (
-    <nav style={{ padding: "20px", background: "#222" }}>
-      <Link to="/" style={{ color: "#fff", marginRight: "20px" }}>
-        Students
-      </Link>
+    <nav className="navbar">
+      <h2>Institute Management System</h2>
 
-      <Link
-        to="/courses"
-        style={{ color: "#fff", marginRight: "20px" }}
-      >
-        Courses
-      </Link>
-
-      <Link to="/enrollments" style={{ color: "#fff" }}>
-        Enrollments
-      </Link>
+      <div className="nav-links">
+        <NavLink to="/">Dashboard</NavLink>
+        <NavLink to="/students">Students</NavLink>
+        <NavLink to="/courses">Courses</NavLink>
+        <NavLink to="/enrollments">Enrollments</NavLink>
+      </div>
     </nav>
   );
 }
