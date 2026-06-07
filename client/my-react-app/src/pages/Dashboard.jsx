@@ -1,76 +1,150 @@
-import React, { useEffect, useState } from "react";
-import API from "../services/api";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchStudents } from "../redux/studentSlice";
+import { fetchCourses } from "../redux/courseSlice";
+import { fetchEnrollments } from "../redux/enrollmentSlice";
 
-const Dashboard = () => {
-  const [stats, setStats] = useState(null);
+import {
+  fetchCourseStudentCount,
+  fetchRevenueData,
+  fetchTopCourses,
+} from "../redux/analyticsSlice";
+
+function Dashboard() {
+  const dispatch = useDispatch();
+
+  const students = useSelector(
+    (state) => state.students.students
+  );
+
+  const courses = useSelector(
+    (state) => state.courses.courses
+  );
+
+  const enrollments = useSelector(
+    (state) => state.enrollments.enrollments
+  );
+
+  const {
+    courseStudentCount,
+    revenueData,
+    topCourses,
+    totalRevenue,
+  } = useSelector((state) => state.analytics);
 
   useEffect(() => {
-    getDashboardStats();
-  }, []);
+    dispatch(fetchStudents());
+    dispatch(fetchCourses());
+    dispatch(fetchEnrollments());
 
-  const getDashboardStats = async () => {
-    try {
-      const response = await API.get("/analytics/dashboard");
-      setStats(response.data);
-    } catch (error) {
-      console.error("Dashboard Error:", error);
-    }
-  };
-
-  if (!stats) {
-    return <h2>Loading...</h2>;
-  }
+    dispatch(fetchCourseStudentCount());
+    dispatch(fetchRevenueData());
+    dispatch(fetchTopCourses());
+  }, [dispatch]);
 
   return (
-    <div style={{ padding: "30px" }}>
-      <h1>Student Management Dashboard</h1>
+    <div>
+      <h1>Dashboard</h1>
 
-      <div
-        style={{
-          display: "flex",
-          gap: "20px",
-          marginTop: "30px",
-          flexWrap: "wrap",
-        }}
-      >
-        <div
-          style={{
-            width: "250px",
-            border: "1px solid #ccc",
-            padding: "20px",
-            borderRadius: "10px",
-          }}
-        >
+      {/* Stats Cards */}
+
+      <div className="stats-grid">
+        <div className="card">
           <h3>Total Students</h3>
-          <h1>{stats.totalStudents}</h1>
+          <h1>{students.length}</h1>
         </div>
 
-        <div
-          style={{
-            width: "250px",
-            border: "1px solid #ccc",
-            padding: "20px",
-            borderRadius: "10px",
-          }}
-        >
+        <div className="card">
           <h3>Total Courses</h3>
-          <h1>{stats.totalCourses}</h1>
+          <h1>{courses.length}</h1>
         </div>
 
-        <div
-          style={{
-            width: "250px",
-            border: "1px solid #ccc",
-            padding: "20px",
-            borderRadius: "10px",
-          }}
-        >
+        <div className="card">
           <h3>Total Enrollments</h3>
-          <h1>{stats.totalEnrollments}</h1>
+          <h1>{enrollments.length}</h1>
         </div>
+
+        <div className="card">
+          <h3>Total Revenue</h3>
+          <h1>₹ {totalRevenue}</h1>
+        </div>
+      </div>
+
+      {/* Course Wise Student Count */}
+
+      <div className="section">
+        <h2>Course Wise Student Count</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Course Name</th>
+              <th>Total Students</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {courseStudentCount.map((item, index) => (
+              <tr key={index}>
+                <td>{item.courseName}</td>
+                <td>{item.totalStudents}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Revenue Table */}
+
+      <div className="section">
+        <h2>Revenue Per Course</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Course Name</th>
+              <th>Revenue</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {revenueData.map((item, index) => (
+              <tr key={index}>
+                <td>{item.courseName}</td>
+                <td>₹ {item.revenue}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Top Courses */}
+
+      <div className="section">
+        <h2>Top 3 Courses</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Course Name</th>
+              <th>Students</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {topCourses.map((item, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{item.courseName}</td>
+                <td>{item.totalStudents}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
-};
+}
 
 export default Dashboard;
