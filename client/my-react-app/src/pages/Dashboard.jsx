@@ -43,6 +43,11 @@ function Dashboard() {
     dispatch(fetchTopCourses());
   }, [dispatch]);
 
+  console.log("courseStudentCount", courseStudentCount);
+  console.log("revenueData", revenueData);
+  console.log("topCourses", topCourses);
+  console.log("totalRevenue", totalRevenue);
+
   return (
     <div>
       <h1>Dashboard</h1>
