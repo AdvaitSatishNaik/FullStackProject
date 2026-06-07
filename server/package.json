@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "Institute Management System Backend",
+  "description": "Student Management System Backend",
   "main": "server.js",
   "type": "module",
   "scripts": {

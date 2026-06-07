@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 function Navbar() {
   return (
     <nav className="navbar">
-      <h2>Institute Management System</h2>
+      <h2>Student Management System</h2>
 
       <div className="nav-links">
         <NavLink to="/">Dashboard</NavLink>
