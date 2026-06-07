@@ -87,7 +87,7 @@ function Dashboard() {
             {courseStudentCount.map((item, index) => (
               <tr key={index}>
                 <td>{item.courseName}</td>
-                <td>{item.totalEnrollments}</td>
+                <td>{item.totalStudents}</td>
               </tr>
             ))}
           </tbody>
@@ -137,7 +137,7 @@ function Dashboard() {
               <tr key={index}>
                 <td>{index + 1}</td>
                 <td>{item.courseName}</td>
-                <td>{item.totalEnrollments}</td>
+                <td>{item.totalStudents}</td>
               </tr>
             ))}
           </tbody>
