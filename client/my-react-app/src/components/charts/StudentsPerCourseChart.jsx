@@ -9,12 +9,12 @@ import {
 
 function StudentsPerCourseChart({ data }) {
   const COLORS = [
-    "#0088FE",
-    "#00C49F",
-    "#FFBB28",
-    "#FF8042",
-    "#A855F7",
-  ];
+  "#2563EB", // Blue
+  "#10B981", // Emerald
+  "#F59E0B", // Amber
+  "#EF4444", // Red
+  "#8B5CF6", // Purple
+];
 
   return (
     <div className="chart-card">

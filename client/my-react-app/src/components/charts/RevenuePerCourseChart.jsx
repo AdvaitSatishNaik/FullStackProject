@@ -23,10 +23,7 @@ function RevenuePerCourseChart({ data }) {
 
           <Tooltip />
 
-          <Bar
-            dataKey="revenue"
-            fill="#2563eb"
-          />
+          <Bar dataKey="revenue" fill="#10B981" />
         </BarChart>
       </ResponsiveContainer>
     </div>
