@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import { fetchStudents } from "../redux/studentSlice";
 import { fetchCourses } from "../redux/courseSlice";
@@ -13,6 +14,7 @@ import {
 
 function Dashboard() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const students = useSelector(
     (state) => state.students.students
@@ -43,17 +45,42 @@ function Dashboard() {
     dispatch(fetchTopCourses());
   }, [dispatch]);
 
-  console.log("courseStudentCount", courseStudentCount);
-  console.log("revenueData", revenueData);
-  console.log("topCourses", topCourses);
-  console.log("totalRevenue", totalRevenue);
-
   return (
     <div>
-      <h1>Dashboard</h1>
+      {/* Header */}
+      <div style={{ display: "flex", gap: "10px" ,marginBottom:"20px"}}>
+  <button
+    onClick={() => navigate("/enrollmentPage")}
+    style={{
+      backgroundColor: "#28a745",
+      color: "white",
+      border: "none",
+      padding: "10px 20px",
+      borderRadius: "5px",
+      cursor: "pointer",
+      fontSize: "16px",
+    }}
+  >
+    Enroll Student
+  </button>
+
+  <button
+    onClick={() => navigate("/students")}
+    style={{
+      backgroundColor: "#007bff",
+      color: "white",
+      border: "none",
+      padding: "10px 20px",
+      borderRadius: "5px",
+      cursor: "pointer",
+      fontSize: "16px",
+    }}
+  >
+    Update Student
+  </button>
+</div>
 
       {/* Stats Cards */}
-
       <div className="stats-grid">
         <div className="card">
           <h3>Total Students</h3>
@@ -77,7 +104,6 @@ function Dashboard() {
       </div>
 
       {/* Course Wise Student Count */}
-
       <div className="section">
         <h2>Course Wise Student Count</h2>
 
@@ -100,8 +126,7 @@ function Dashboard() {
         </table>
       </div>
 
-      {/* Revenue Table */}
-
+      {/* Revenue Per Course */}
       <div className="section">
         <h2>Revenue Per Course</h2>
 
@@ -125,9 +150,8 @@ function Dashboard() {
       </div>
 
       {/* Top Courses */}
-
       <div className="section">
-        <h2>Top 2 Courses</h2>
+        <h2>Top 3 Courses</h2>
 
         <table>
           <thead>

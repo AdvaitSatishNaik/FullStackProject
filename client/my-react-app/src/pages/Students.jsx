@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 import {
   fetchStudents,
   deleteStudent,
@@ -7,6 +9,7 @@ import {
 
 function Students() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { students, loading, error } = useSelector(
     (state) => state.students
@@ -44,14 +47,42 @@ function Students() {
                 <td>{student.mobile}</td>
 
                 <td>
-                  <button
-                    className="delete-btn"
-                    onClick={() =>
-                      dispatch(deleteStudent(student._id))
-                    }
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "10px",
+                    }}
                   >
-                    Delete
-                  </button>
+                    <button
+                      onClick={() =>
+                        navigate(
+                          `/edit-student/${student._id}`
+                        )
+                      }
+                      style={{
+                        backgroundColor: "#f59e0b",
+                        color: "white",
+                        border: "none",
+                        padding: "8px 15px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        fontWeight: "600",
+                      }}
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      className="delete-btn"
+                      onClick={() =>
+                        dispatch(
+                          deleteStudent(student._id)
+                        )
+                      }
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
