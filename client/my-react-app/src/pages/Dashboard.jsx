@@ -12,6 +12,10 @@ import {
   fetchTopCourses,
 } from "../redux/analyticsSlice";
 
+import StudentsPerCourseChart from "../components/charts/StudentsPerCourseChart";
+import RevenuePerCourseChart from "../components/charts/RevenuePerCourseChart";
+// import TopCoursesChart from "../components/charts/TopCoursesChart";
+
 function Dashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -48,37 +52,57 @@ function Dashboard() {
   return (
     <div>
       {/* Header */}
-      <div style={{ display: "flex", gap: "10px" ,marginBottom:"20px"}}>
-  <button
-    onClick={() => navigate("/enrollmentPage")}
-    style={{
-      backgroundColor: "#28a745",
-      color: "white",
-      border: "none",
-      padding: "10px 20px",
-      borderRadius: "5px",
-      cursor: "pointer",
-      fontSize: "16px",
-    }}
-  >
-    Enroll Student
-  </button>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "20px",
+        }}
+      >
+        <h1>Dashboard</h1>
 
-  <button
-    onClick={() => navigate("/students")}
-    style={{
-      backgroundColor: "#007bff",
-      color: "white",
-      border: "none",
-      padding: "10px 20px",
-      borderRadius: "5px",
-      cursor: "pointer",
-      fontSize: "16px",
-    }}
-  >
-    Update Student
-  </button>
-</div>
+        <div
+          style={{
+            display: "flex",
+            gap: "10px",
+          }}
+        >
+          <button
+            onClick={() =>
+              navigate("/enrollmentPage")
+            }
+            style={{
+              backgroundColor: "#22c55e",
+              color: "white",
+              border: "none",
+              padding: "10px 20px",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontWeight: "600",
+            }}
+          >
+            Enroll Student
+          </button>
+
+          <button
+            onClick={() =>
+              navigate("/students")
+            }
+            style={{
+              backgroundColor: "#3b82f6",
+              color: "white",
+              border: "none",
+              padding: "10px 20px",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontWeight: "600",
+            }}
+          >
+            Update Student
+          </button>
+        </div>
+      </div>
 
       {/* Stats Cards */}
       <div className="stats-grid">
@@ -103,6 +127,29 @@ function Dashboard() {
         </div>
       </div>
 
+      {/* Charts Section */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns:
+            "repeat(auto-fit, minmax(500px, 1fr))",
+          gap: "20px",
+          marginTop: "30px",
+        }}
+      >
+        <StudentsPerCourseChart
+          data={courseStudentCount}
+        />
+
+        <RevenuePerCourseChart
+          data={revenueData}
+        />
+
+        {/* <TopCoursesChart
+          data={topCourses}
+        /> */}
+      </div>
+
       {/* Course Wise Student Count */}
       <div className="section">
         <h2>Course Wise Student Count</h2>
@@ -116,17 +163,19 @@ function Dashboard() {
           </thead>
 
           <tbody>
-            {courseStudentCount.map((item, index) => (
-              <tr key={index}>
-                <td>{item.courseName}</td>
-                <td>{item.totalStudents}</td>
-              </tr>
-            ))}
+            {courseStudentCount.map(
+              (item, index) => (
+                <tr key={index}>
+                  <td>{item.courseName}</td>
+                  <td>{item.totalStudents}</td>
+                </tr>
+              )
+            )}
           </tbody>
         </table>
       </div>
 
-      {/* Revenue Per Course */}
+      {/* Revenue Table */}
       <div className="section">
         <h2>Revenue Per Course</h2>
 
@@ -139,19 +188,21 @@ function Dashboard() {
           </thead>
 
           <tbody>
-            {revenueData.map((item, index) => (
-              <tr key={index}>
-                <td>{item.courseName}</td>
-                <td>₹ {item.revenue}</td>
-              </tr>
-            ))}
+            {revenueData.map(
+              (item, index) => (
+                <tr key={index}>
+                  <td>{item.courseName}</td>
+                  <td>₹ {item.revenue}</td>
+                </tr>
+              )
+            )}
           </tbody>
         </table>
       </div>
 
-      {/* Top Courses */}
+      {/* Top Courses Table */}
       <div className="section">
-        <h2>Top 3 Courses</h2>
+        <h2>Top Courses</h2>
 
         <table>
           <thead>
@@ -163,13 +214,15 @@ function Dashboard() {
           </thead>
 
           <tbody>
-            {topCourses.map((item, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{item.courseName}</td>
-                <td>{item.totalStudents}</td>
-              </tr>
-            ))}
+            {topCourses.map(
+              (item, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{item.courseName}</td>
+                  <td>{item.totalStudents}</td>
+                </tr>
+              )
+            )}
           </tbody>
         </table>
       </div>

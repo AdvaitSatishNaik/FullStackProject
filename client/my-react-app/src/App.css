@@ -243,3 +243,15 @@ table tr:hover {
     gap: 20px;
   }
 }
+
+.chart-card {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0px 4px 12px
+    rgba(0, 0, 0, 0.08);
+}
+
+.chart-card h2 {
+  margin-bottom: 20px;
+}
